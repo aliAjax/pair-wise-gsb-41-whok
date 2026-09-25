@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台风灾后查勘排程台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>台风灾后查勘排程台</h1>
+      <p class="sub">事件：台风「海鸥」09-24 过境 · 查勘日 2026-09-25 / 09-26 · 规则：撞车 / 跨区赶场&lt;90分钟 / 资质不符 → 留待派区 · 数据本地保存，重开可追溯</p>
+    </div>
+    <div class="topbar-actions">
+      <span id="summary" class="chips"></span>
+      <button id="reset-btn" class="btn ghost" type="button">重置示例数据</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid row1">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>待派区 <span class="hint">按 事件 → 区域 → 损失 排序；不合规派工留在此处并写明原因</span></h2>
+        </div>
+        <form id="add-case-form" class="inline-form">
+          <input name="event" list="dl-events" placeholder="事件" required>
+          <input name="region" list="dl-regions" placeholder="区域/乡镇" required>
+          <input name="title" placeholder="案情简述" required>
+          <input name="loss" type="number" min="0" step="1000" placeholder="损失（元）" required>
+          <select name="riskLevel">
+            <option value="normal">一般</option>
+            <option value="high">高风险</option>
+          </select>
+          <button class="btn primary" type="submit">登记案件</button>
+          <datalist id="dl-events"></datalist>
+          <datalist id="dl-regions"></datalist>
+        </form>
+        <div id="pending-list"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>任务台 <span class="hint">到场录灾损与风险；高风险复核确认前不能预付</span></h2>
+        </div>
+        <div id="task-list"></div>
+      </section>
+    </div>
+
+    <div class="grid row2">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>人员与班次 <span class="hint">登记班次与高风险资质</span></h2>
+        </div>
+        <form id="add-staff-form" class="inline-form">
+          <input name="name" placeholder="查勘员姓名" required>
+          <label class="chk"><input type="checkbox" name="highRiskQualified"> 高风险资质</label>
+          <button class="btn primary" type="submit">登记人员</button>
+        </form>
+        <form id="add-shift-form" class="inline-form">
+          <select name="staffId" required></select>
+          <input type="date" name="date" value="2026-09-25" required>
+          <input type="time" name="start" value="08:00" required>
+          <input type="time" name="end" value="12:00" required>
+          <button class="btn primary" type="submit">登记班次</button>
+        </form>
+        <div id="staff-list"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>变更记录 <span class="hint">本地持久化，重开页面仍可追溯任务、人员与变更</span></h2>
+        </div>
+        <div id="audit-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/scheduler.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
