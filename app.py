@@ -480,9 +480,36 @@ class ApiHandler(BaseHTTPRequestHandler):
             raise DomainError("JSON 请求体必须是对象")
         return value
 
+    def _serve_static(self, url_path: str) -> bool:
+        """提供 static/ 下的静态页面（如台风查勘排程台 /scheduler/）。"""
+        if not url_path.startswith("/scheduler"):
+            return False
+        rel = url_path.removeprefix("/scheduler").lstrip("/")
+        if not rel:
+            rel = "index.html"
+        import mimetypes
+
+        base = (ROOT / "static" / "scheduler").resolve()
+        target = (base / rel).resolve()
+        if base not in target.parents or not target.is_file():
+            self._send(404, {"error": "页面不存在"})
+            return True
+        ctype = mimetypes.guess_type(str(target))[0] or "application/octet-stream"
+        if ctype.startswith("text/") or ctype in {"application/javascript", "application/json"}:
+            ctype += "; charset=utf-8"
+        body = target.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+        return True
+
     def do_GET(self) -> None:
         try:
             path = urlparse(self.path).path
+            if self._serve_static(path):
+                return
             if path in {"/", "/index.html"}:
                 body = (ROOT / "static" / "index.html").read_bytes()
                 self.send_response(200)

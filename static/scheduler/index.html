@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台风查勘排程台</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">巡</span>
+    <div>
+      <h1>台风查勘排程台</h1>
+      <p class="sub">案件排序 · 班次资质 · 派工校验 · 到场与复核 · 变更留痕</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <label class="operator">当班调度
+      <input id="operator" type="text" maxlength="12">
+    </label>
+    <button class="btn ghost" id="reset-demo" type="button">重置演示数据</button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="board" type="button">排程台</button>
+  <button class="tab" data-tab="cases" type="button">案件台账</button>
+  <button class="tab" data-tab="staff" type="button">人员班次</button>
+  <button class="tab" data-tab="logs" type="button">变更日志</button>
+</nav>
+
+<section id="kpi" class="kpi-bar"></section>
+<main id="view"></main>
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<!-- 三层分离：storage.js 保存层 / scheduler.js 排程层 / app.js 页面层 -->
+<script src="js/storage.js"></script>
+<script src="js/scheduler.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
